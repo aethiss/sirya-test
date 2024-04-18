@@ -1,15 +1,19 @@
 import '@testing-library/jest-dom'
-import { render } from "@testing-library/react"
-import App from "../App"
+import { render } from '@testing-library/react'
+import App from '../App'
 
-test('TEST JEST', () => {
-  expect(true).toBe(true)
+// Mocks
+
+describe('Rendering', () => {
+  test('Renders the main page', () => {
+    const { asFragment } = render(<App />)
+    expect(asFragment()).toMatchSnapshot()
+  })
 })
 
-test("Renders the main page", () => {
-  const { asFragment } = render(<App />)
-  expect(asFragment()).toMatchSnapshot()
-  console.log(asFragment().firstChild)
-  expect(asFragment().querySelector('img')).not.toBeInTheDocument()
-  // expect(asFragment().firstChild.querySelector('#config')).toBeInTheDocument();
-})
+// describe('Functionality', () => {
+//   test.only('If config file is loaded', async () => {
+//     render(<App />)
+//     expect(ipcRenderer.invoke).toHaveBeenCalled()
+//   })
+// })

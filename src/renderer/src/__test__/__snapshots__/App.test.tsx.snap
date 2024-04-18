@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Renders the main page 1`] = `
+exports[`Rendering Renders the main page 1`] = `
 <DocumentFragment>
   <img
     alt="logo"
     class="logo"
     src="[object Object]"
   />
-  <div
-    id="config"
-  >
-    <h1>
-      CIAO RAFFA !
-    </h1>
+  <div>
+    <button
+      data-testid="config-button"
+    >
+      Select config file
+    </button>
   </div>
 </DocumentFragment>
 `;

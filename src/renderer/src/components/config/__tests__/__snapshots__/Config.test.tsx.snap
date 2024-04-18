@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Config Rendering Renders the config page 1`] = `
+exports[`Config Rendering Renders the config page without file 1`] = `
 <DocumentFragment>
-  <div
-    id="config"
-  >
-    <h1>
-      CIAO RAFFA !
-    </h1>
+  <div>
+    <button
+      data-testid="config-button"
+    >
+      Select config file
+    </button>
   </div>
 </DocumentFragment>
 `;

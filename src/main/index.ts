@@ -1,5 +1,6 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
+import { readFile, writeFile } from 'fs/promises'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
@@ -59,6 +60,10 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  ipcMain.handle('openConfigFile', () => {
+    return { salt: 'salt' }
+  })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -72,3 +77,31 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('open-file-dialog', async (): Promise<string | undefined> => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    filters: [{ name: 'text', extensions: ['txt'] }]
+  })
+
+  if (!canceled) {
+    const myFile = await readFile(filePaths[0], 'utf-8')
+    const lines = myFile.split('\n')
+    const data: { salt: string; columns: string[] } = {
+      salt: '',
+      columns: []
+    }
+
+    lines.forEach((line) => {
+      const [key, value] = line.split('=')
+      if (key === 'salt' && value) {
+        data.salt = value.trim()
+      } else if (key === 'column' && value) {
+        data.columns.push(value.trim())
+      }
+    })
+    const jsonData = JSON.stringify(data, null)
+    writeFile(join(__dirname, '../files/config.json'), jsonData)
+    return filePaths[0]
+  }
+  return undefined
+})

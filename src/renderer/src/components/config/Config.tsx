@@ -1,11 +1,21 @@
-import { ReactElement } from 'react';
+import { ReactElement } from 'react'
 
-const Config = (): ReactElement => {
-  return (
-    <div id="config">
-      <h1>CIAO RAFFA !</h1>
-    </div>
-  );
+interface Props {
+  salt?: string
 }
 
-export default Config;
+const Config = ({ salt }: Props): ReactElement => {
+  const handleConfig = (): void => {
+    window.electron.ipcRenderer.send('open-file-dialog')
+  }
+
+  return (
+    <div>
+      <button data-testid="config-button" onClick={handleConfig}>
+        {salt ? 'Update config file' : 'Select config file'}
+      </button>
+    </div>
+  )
+}
+
+export default Config
